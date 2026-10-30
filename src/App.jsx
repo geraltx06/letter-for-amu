@@ -9,7 +9,7 @@ const paragraphs = [
   `The painting behind this letter is The Return of Persephone. Every year she has to leave, and the whole world turns cold until she comes back. I love the moment it captures: arms already reaching out, just before they hold each other again. That is us, two weeks from now. I'll be the one climbing back into the light, and you'll be the one waiting with open arms.`,
   `Gibran also said, "let there be spaces in your togetherness." Fine. I'll allow two weeks of space, but not one day more. And while the house fills up with diyas and noise and sweets, every lamp I light will carry a small wish with your name in it.`,
   `Please take care of yourself while I'm gone. Eat properly, sleep on time, and call me whenever you miss me, even if it's late. Especially if it's late.`,
-  `Happy Diwali, my light. I love you more than all the diyas in the world.`,
+  `I love you more than all the diyas in the world.`,
 ]
 const signOff = ['Forever yours,', 'Mayank']
 
