@@ -47,7 +47,7 @@ export default function App() {
         <span className="flap"><i /></span>
         <span className="seal">A</span>
       </button>
-      <p className="hint">break the seal, my love</p>
+      <p className="hint">tap to break the seal</p>
       <p className="caption">The Return of Persephone · Frederic Leighton, 1891</p>
 
       {stage > 2 && (
