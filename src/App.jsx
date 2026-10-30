@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const greeting = 'My dearest Amu,'
+const greeting = 'My Joon,'
 const paragraphs = [
   `By the time you read this, I'll be on my way home for Diwali. Two whole weeks. It's the first time we'll be apart, and my heart already feels the difference.`,
   `For four months now, we haven't spent a single weekend apart. Every Saturday and every Sunday has had you in it, and I've grown so used to that, I'm not sure I remember what a weekend looks like without you. Gibran wrote that "love knows not its own depth until the hour of separation." I think I'm about to find out just how deep mine goes.`,
@@ -11,7 +11,7 @@ const paragraphs = [
   `Please take care of yourself while I'm gone. Eat properly, sleep on time, and call me whenever you miss me, even if it's late. Especially if it's late.`,
   `I love you more than all the diyas in the world.`,
 ]
-const signOff = ['Forever yours,', 'Mayank']
+const signOff = ['Forever yours,', 'May']
 
 export default function App() {
   const [stage, setStage] = useState(0) // 0 sealed, 1 flap open, 2 letter out, 3 reading
