@@ -1,7 +1,10 @@
 import rain from './rain.mp4'
+import photo1 from './01.jpg'
+import clip2 from './02-video.mp4'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 const greeting = 'My Joon,'
+const greetings = { 1: 'Day 02,' } // days that open with their own first line instead
 // one entry per day; days not written yet stay locked even once their date arrives
 const letters = [
   [
@@ -15,13 +18,50 @@ const letters = [
   `I love you more than all the diyas in the world.`,
   ],
   [
-    `Day one. I made it home, and the first thing I noticed was that nobody here knows how you take your chai. It's a small thing, but it's the kind of small thing my whole day is suddenly made of.`,
-    `Everyone keeps asking me how I've been, and I keep giving the short answer, because the long answer is you, and I'm not ready to share that with the whole family over dinner. So I'm saving it for this letter instead.`,
-    `I caught myself today turning to tell you something three separate times. Once about a dog on the street that looked exactly like it had opinions. Once about a song. And once for no reason at all, just because I'm used to you being on my left.`,
+    `Hello sugar, it's been 2 days since we've been away from each other, and one of the first weekends that we've spent apart in almost 4 months.`,
+    `I know it's not very romantic reading letters from on here, on a digital world, but I try to make them as engaging as possible.`,
+    `It was Lakshay's birthday today. Went to the mall to surprise him, and his reaction was absolutely priceless and worth it. Another friend of mine, Buddham, was also there. I'm seeing him after school today. It's been almost a decade, it's insane. Honestly Buddham turned out to be a pretty cool guy in the end, he's also a really big nerd, we share a lot of common hobbies as well and he plays Balatro (it's a really cool game I used to play, you should check it out, you'd love it).`,
+    `Also picked up a really really cool book for you, you'll find out when I come back. I knew I wanted to give it to you the moment you made me aware about Randall Munroe's What If that day at the villa, since this is a book I read growing up, so in a lot of ways, this was my version of What If. I'm really excited for you to read that.`,
     `Rilke wrote that love is "two solitudes that protect and touch and greet each other." I used to think that was a sad line. Today it makes sense to me. We're each in our own little solitude for a while, and this letter is me touching yours, just to say hello.`,
-    `Thirteen more letters to go, and then I'm back. Until then, here's your job for today: do one thing that makes you laugh, eat something you love, and go to sleep knowing that somewhere far away, someone is counting down the days to see your face again.`,
   ],
 ]
+// extra bits tucked in after a day's sign-off, keyed by day
+const extras = {
+  1: (
+    <>
+      {/* frames are square; objectPosition picks which part of each shot stays in view */}
+      <div className="polaroids">
+        <div className="polaroid">
+          <img className="photo" src={photo1} alt="Selfie of three friends grinning" style={{ objectPosition: '75% 50%' }} />
+        </div>
+        <div className="polaroid">
+          <video className="photo" src={clip2} autoPlay muted loop playsInline aria-label="Looping selfie clip in sunglasses" style={{ objectPosition: '50% 60%' }} />
+        </div>
+      </div>
+      <section className="dispatch">
+        <h2>Here's some fun stuff I thought I'd include here </h2>
+        <ol>
+          <li>
+            <h3>Two-sentence mystery</h3>
+            A man enters a windowless room, turns on a single desk lamp, reads one sentence from a handwritten notebook, and immediately shuts off the main power to the entire building. He committed no crime, and nothing was damaged. Why did he do it?
+          </li>
+          <li>
+            <h3>True or myth?</h3>
+            NASA spent $1.2 million in the 1960s developing an ink pen that worked in zero gravity, while Soviet cosmonauts simply opted for grease pencils.
+            <details>
+              <summary>tap for the answer</summary>
+              Myth! NASA never paid for it. Paul Fisher funded the space pen himself, then sold it to NASA, and the cosmonauts ended up using it too.
+            </details>
+          </li>
+          <li>
+            <h3>Micro-challenge</h3>
+            Reply with your entire day summarized using exactly three verbs. Nothing else.
+          </li>
+        </ol>
+      </section>
+    </>
+  ),
+}
 const signOff = ['Forever yours,', 'May']
 
 const START = new Date(2026, 9, 31) // day 0 unlocks on this date (local midnight), one more each day after
@@ -83,7 +123,7 @@ export default function App() {
   const [pick, setPick] = useState(null) // { day, rect } of the envelope tapped in the grid
   // one video outside both screens so it keeps playing, not restarting, when the letter opens
   const bg = <video className="bg" src={rain} autoPlay muted loop playsInline aria-hidden="true" />
-  if (pick) return <>{bg}<Letter paragraphs={letters[pick.day]} from={pick.rect} onBack={() => setPick(null)} /></>
+  if (pick) return <>{bg}<Letter day={pick.day} paragraphs={letters[pick.day]} from={pick.rect} onBack={() => setPick(null)}>{extras[pick.day]}</Letter></>
 
   return (
     <>
@@ -111,7 +151,7 @@ export default function App() {
   )
 }
 
-function Letter({ paragraphs, from, onBack }) {
+function Letter({ day, paragraphs, from, onBack, children }) {
   const [stage, setStage] = useState(0) // 0 sealed, 1 flap open, 2 letter out, 3 reading
   const [flying, setFlying] = useState(true)
   const env = useRef()
@@ -145,7 +185,7 @@ function Letter({ paragraphs, from, onBack }) {
       </span>
     ))
 
-  const cls = ['scene', flying && 'flying', stage > 0 && 'open', stage > 1 && 'out', stage > 2 && 'reading'].filter(Boolean).join(' ')
+  const cls = ['scene', `day-${day}`, flying && 'flying', stage > 0 && 'open', stage > 1 && 'out', stage > 2 && 'reading'].filter(Boolean).join(' ')
 
   return (
     <main className={cls}>
@@ -157,13 +197,15 @@ function Letter({ paragraphs, from, onBack }) {
         <div className="overlay">
           <button className="back" onClick={onBack}>← all letters</button>
           <article className="letter">
-            <h1>{ink(greeting)}</h1>
+            <h1>{ink(greetings[day] ?? greeting)}</h1>
             {paragraphs.map((p, i) => <p key={i}>{ink(p)}</p>)}
             <p className="sign">
               {ink(signOff[0])}
               <br />
               <span className="name">{ink(signOff[1])}</span>
             </p>
+            {/* fades in once the last word has inked */}
+            {children && <div className="extra" style={{ animationDelay: `${1 + n * 0.05}s` }}>{children}</div>}
           </article>
         </div>
       )}
