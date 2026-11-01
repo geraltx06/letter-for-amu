@@ -29,7 +29,7 @@ body {
   overflow: hidden;
 }
 
-/* the painting, aged: sepia, vignette, then film grain on top */
+/* vignette over the background video, then film grain on top */
 .scene::before, .scene::after {
   content: '';
   position: absolute;
@@ -37,29 +37,23 @@ body {
   pointer-events: none;
 }
 .scene::before {
-  background:
-    radial-gradient(ellipse at center, transparent 30%, rgba(15, 8, 4, 0.85) 100%),
-    url('./persephone.jpg') center 30% / cover;
-  filter: sepia(0.35) saturate(0.85) brightness(0.62) contrast(1.05);
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(15, 8, 4, 0.85) 100%);
+}
+
+.bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated; /* keep the pixel art crisp when upscaled */
+  filter: brightness(0.7);
 }
 .scene::after {
   z-index: 2;
   opacity: 0.22;
   mix-blend-mode: overlay;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-.caption {
-  position: absolute;
-  right: 16px;
-  bottom: 14px;
-  left: 16px;
-  z-index: 1;
-  color: var(--cream);
-  opacity: 0.6;
-  font-size: 0.95rem;
-  font-style: italic;
-  text-align: right;
 }
 
 /* envelope */
@@ -80,7 +74,7 @@ body {
 .envelope:disabled { cursor: default; }
 @keyframes bob { 50% { transform: translateY(-8px) rotate(-1deg); } }
 
-.env-back, .peek, .pocket, .pocket i, .flap, .flap i, .seal { position: absolute; }
+.tilt, .env-back, .peek, .pocket, .pocket i, .flap, .flap i, .seal { position: absolute; }
 
 .env-back {
   inset: 0;
@@ -234,3 +228,66 @@ body {
     transition-delay: 0s !important;
   }
 }
+
+/* the 15-day grid */
+.grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: clamp(14px, 3vw, 32px);
+  width: min(900px, 100%);
+  padding: 0 16px;
+}
+.grid .envelope { width: 100%; margin: 0; animation: none; transition: transform 0.3s; }
+.grid .envelope:not(:disabled):hover { transform: translateY(-4px) rotate(-1deg); }
+.grid .peek { padding-top: 12%; font-size: clamp(0.6rem, 1.8vw, 1rem); }
+.grid .seal { width: 30%; height: auto; aspect-ratio: 1; font-size: clamp(11px, 2.2vw, 20px); }
+.grid .seal::after { inset: 12%; }
+.locked .tilt::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: 6;
+  border-radius: 5px;
+  background: rgba(10, 5, 2, 0.68);
+}
+@media (max-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+.back {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  z-index: 11;
+  padding: 6px 4px;
+  border: 0;
+  background: none;
+  color: var(--cream);
+  font: italic 1.1rem 'Cormorant Garamond', Georgia, serif;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.overlay .back { position: fixed; }
+
+.tile { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.day {
+  color: var(--cream);
+  font-size: clamp(0.9rem, 1.8vw, 1.15rem);
+  font-style: italic;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+}
+.tile:has(.locked) .day { opacity: 0.5; }
+
+/* while flying in from the grid: no bob (it restarts cleanly after), chrome fades in once it lands */
+.flying .envelope { animation: none; }
+.flying .hint, .flying .back { opacity: 0; }
+.back { transition: opacity 0.4s; }
+
+/* tilt: --tx/--ty run -1..1, from the cursor (per envelope) or the gyro (on :root) */
+.tilt {
+  inset: 0;
+  perspective: 1000px; /* keeps the flap's 3D swing; without preserve-3d so z-index stacking still works */
+  transform: rotateY(calc(var(--tx, 0) * 14deg)) rotateX(calc(var(--ty, 0) * -14deg));
+  transition: transform 0.25s ease-out;
+}
+.grid .envelope { perspective: 400px; }
