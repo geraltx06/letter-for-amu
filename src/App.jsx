@@ -1,10 +1,11 @@
 import rain from './rain.mp4'
 import photo1 from './01.jpg'
 import clip2 from './02-video.mp4'
+import photo3 from './03.jpg'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 const greeting = 'My Joon,'
-const greetings = { 1: 'Day 02,' } // days that open with their own first line instead
+const greetings = { 1: 'Day 02,', 2: 'Day 03,' } // days that open with their own first line instead
 // one entry per day; days not written yet stay locked even once their date arrives
 const letters = [
   [
@@ -23,6 +24,14 @@ const letters = [
     `It was Lakshay's birthday today. Went to the mall to surprise him, and his reaction was absolutely priceless and worth it. Another friend of mine, Buddham, was also there. I'm seeing him after school today. It's been almost a decade, it's insane. Honestly Buddham turned out to be a pretty cool guy in the end, he's also a really big nerd, we share a lot of common hobbies as well and he plays Balatro (it's a really cool game I used to play, you should check it out, you'd love it).`,
     `Also picked up a really really cool book for you, you'll find out when I come back. I knew I wanted to give it to you the moment you made me aware about Randall Munroe's What If that day at the villa, since this is a book I read growing up, so in a lot of ways, this was my version of What If. I'm really excited for you to read that.`,
     `Rilke wrote that love is "two solitudes that protect and touch and greet each other." I used to think that was a sad line. Today it makes sense to me. We're each in our own little solitude for a while, and this letter is me touching yours, just to say hello.`,
+  ],
+  [
+    `Today I'm writing this from my bed, which is pretty much where I spent the whole day. I woke up with a really bad fever, a cough and a cold, and I slept through most of it, even though I was supposed to be working from home.`,
+    `Instead of resting properly, I kept making fixes to the video from bed and doing whatever I could for the release, because I know how much is riding on it and I didn't want it to slip any further. I know I keep missing timelines and overshooting them. I'm really sorry, Joon. I'm sorry for the delays, and for not being able to hold to the plan.`,
+    `I'm sorry about the evening too. What we had wasn't a fight, and I don't want to make it bigger than it was, but it still left a bad feeling. I wasn't taking anything personally. I just felt bad about the day, about the delays, about how badly I wanted this to go right, and it came out sideways. That part is mine to own.`,
+    `I know you had a tough day too. Nothing seemed to go right for either of us, and the video was supposed to be the thing that made all of it feel worth it. I haven't been able to deliver that, and I'm sorry. You didn't deserve to carry that on top of everything else.`,
+    `Today was also Ain's birthday celebration, and it was so much fun. I got to see all my friends after more than a year, which honestly felt like coming up for air. I got emotional while we were talking, more than I expected, but it was a good kind of emotional. He really liked the gifts, and he really loves your poetry page. I was a little proud to be the one who got to tell you that.`,
+    `I love you, even when we're both tired and getting things wrong.`,
   ],
 ]
 // extra bits tucked in after a day's sign-off, keyed by day
@@ -56,6 +65,36 @@ const extras = {
           <li>
             <h3>Micro-challenge</h3>
             Reply with your entire day summarized using exactly three verbs. Nothing else.
+          </li>
+        </ol>
+      </section>
+    </>
+  ),
+  2: (
+    <>
+      <div className="polaroids">
+        <div className="polaroid">
+          <img className="photo" src={photo3} alt="Photo from today" />
+        </div>
+      </div>
+      <section className="dispatch">
+        <h2>Here's some more fun stuff</h2>
+        <ol>
+          <li>
+            <h3>Two-sentence mystery</h3>
+            A woman receives a postcard from a town she has never visited, with her own handwriting on the back. It's dated tomorrow, and she has never mailed anything in her life. What should she do?
+          </li>
+          <li>
+            <h3>True or myth?</h3>
+            Wombats produce cube-shaped droppings.
+            <details>
+              <summary>tap for the answer</summary>
+              True! The wombat's intestine stretches unevenly along its length, which squares off the droppings. They leave them on rocks and logs to mark their territory.
+            </details>
+          </li>
+          <li>
+            <h3>Micro-challenge</h3>
+            Reply with the one song stuck in your head this week. Nothing else.
           </li>
         </ol>
       </section>
