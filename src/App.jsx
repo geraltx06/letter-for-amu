@@ -1,11 +1,12 @@
-import rain from './rain.mp4'
 import photo1 from './01.jpg'
 import clip2 from './02-video.mp4'
 import photo3 from './03.jpg'
+import photo4 from './04.jpg'
+import Dusk from './Dusk'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 const greeting = 'My Joon,'
-const greetings = { 1: 'Day 02,', 2: 'Day 03,' } // days that open with their own first line instead
+const greetings = { 1: 'Day 02,', 2: 'Day 03,', 3: 'Day 04,' } // days that open with their own first line instead
 // one entry per day; days not written yet stay locked even once their date arrives
 const letters = [
   [
@@ -32,6 +33,24 @@ const letters = [
     `I know you had a tough day too. Nothing seemed to go right for either of us, and the video was supposed to be the thing that made all of it feel worth it. I haven't been able to deliver that, and I'm sorry. You didn't deserve to carry that on top of everything else.`,
     `Today was also Ain's birthday celebration, and it was so much fun. I got to see all my friends after more than a year, which honestly felt like coming up for air. I got emotional while we were talking, more than I expected, but it was a good kind of emotional. He really liked the gifts, and he really loves your poetry page. I was a little proud to be the one who got to tell you that.`,
     `I love you, even when we're both tired and getting things wrong.`,
+  ],
+  [
+    `It's out. Our very first video is out in the world, and I've been grinning at my phone like a fool ever since.`,
+    `A month ago it was only an idea. Then it became scripts, and scribbles, and edits, and late nights, and me promising "just one more fix" more times than I'd care to count. And today we finally pressed publish.`,
+    `Yesterday I wrote to you from bed, apologising for the delays and saying I hadn't been able to deliver. Well, Joon, it is delivered. Late, a little feverish, but delivered. Thank you for waiting on me, and for never once letting go of it, even when I was making it hard.`,
+    `I'll admit I didn't picture it like this. I always imagined us side by side when we hit that button, probably squabbling over the thumbnail one last time. Instead it was the two of us on a video call, in two different homes, staring at the same screen and holding our breath. It made me a tad sad, if I'm honest. But yours was still the first face I saw when it went live, and I think that counts for a great deal.`,
+    `Browning wrote that "a man's reach should exceed his grasp, or what's a heaven for?" For a whole month we were reaching for something just past our fingertips. Today we finally got hold of it.`,
+    `This was ours from the very first scribble. And honestly, the best part was never the upload. It was the month itself, the two of us building something out of nothing.`,
+    `You made me a better man this month, and not by asking nicely. You wouldn't let me settle, and you wouldn't let me give up, even on the days I wanted to do both. I grumbled about it, I'll own that. But I'm more disciplined than I was a month ago, more patient, and far more honest about what I can actually deliver. That's your doing, every bit of it.`,
+    `Here is what I've learnt you are made of:`,
+    `Your patience, which I tested far more than anyone should.`,
+    `Your honesty, even when a softer answer would have been easier.`,
+    `Your stubbornness, the good kind, the kind that wouldn't let this die.`,
+    `Your eye for detail, which caught everything I'd stopped seeing.`,
+    `Your way with words, which anyone who has read your poetry already knows.`,
+    `And your kindness, on the days nothing went right and you'd every excuse not to be kind at all.`,
+    `It feels fitting that it happened with Diwali only days away, when everyone is lighting lamps for new beginnings. We got to light one of our own. When we're back, we're celebrating properly, in person, the way we should have today. Until then, consider this letter a toast. To us, to Stats and Scribbles, and to the very first of many.`,
+    `I love you, and I'm so terribly proud of us.`,
   ],
 ]
 // extra bits tucked in after a day's sign-off, keyed by day
@@ -100,10 +119,40 @@ const extras = {
       </section>
     </>
   ),
+  3: (
+    <>
+      <div className="polaroids">
+        <div className="polaroid">
+          <img className="photo" src={photo4} alt="Launch night: YouTube Studio on the monitor, and Amu on the video call on the laptop" style={{ objectPosition: '95% 50%' }} />
+        </div>
+      </div>
+      <section className="dispatch">
+        <h2>And some more fun stuff</h2>
+        <ol>
+          <li>
+            <h3>Two-sentence mystery</h3>
+            An old painter finishes the canvas she has worked on for ten years, signs it with great care, and then paints over the whole thing in white. She has never been happier in her life. Why?
+          </li>
+          <li>
+            <h3>True or myth?</h3>
+            The very first video on YouTube was a 19-second clip of one of its co-founders at the zoo, talking about elephants.
+            <details>
+              <summary>tap for the answer</summary>
+              True! Jawed Karim uploaded "Me at the zoo" in April 2005. All he really says is that the elephants have "really, really, really long trunks." Every channel since started somewhere, ours included.
+            </details>
+          </li>
+          <li>
+            <h3>Micro-challenge</h3>
+            Reply with the one comment you'd most love to see on our video. Nothing else.
+          </li>
+        </ol>
+      </section>
+    </>
+  ),
 }
 const signOff = ['Forever yours,', 'May']
 
-const START = new Date(2026, 9, 31) // day 0 unlocks on this date (local midnight), one more each day after
+const START = new Date(2026, 9, 31) // day 1 unlocks on this date (local midnight), one more each day after
 const DAYS = 15
 const unlocked = Math.floor((Date.now() - START) / 864e5) + 1
 
@@ -160,8 +209,8 @@ export default function App() {
   }, [])
 
   const [pick, setPick] = useState(null) // { day, rect } of the envelope tapped in the grid
-  // one video outside both screens so it keeps playing, not restarting, when the letter opens
-  const bg = <video className="bg" src={rain} autoPlay muted loop playsInline aria-hidden="true" />
+  // one background outside both screens so it keeps playing, not restarting, when a letter opens
+  const bg = <Dusk />
   if (pick) return <>{bg}<Letter day={pick.day} paragraphs={letters[pick.day]} from={pick.rect} onBack={() => setPick(null)}>{extras[pick.day]}</Letter></>
 
   return (
@@ -178,9 +227,9 @@ export default function App() {
                 className={open ? 'envelope' : 'envelope locked'}
                 disabled={!open}
                 onClick={(e) => setPick({ day: i, rect: e.currentTarget.getBoundingClientRect() })}
-                aria-label={open ? `Open day ${i}` : `Day ${i}, not unlocked yet`}
+                aria-label={open ? `Open day ${i + 1}` : `Day ${i + 1}, not unlocked yet`}
               />
-              <p className="day" aria-hidden="true">day {i}</p>
+              <p className="day" aria-hidden="true">day {i + 1}</p>
             </div>
           )
         })}
