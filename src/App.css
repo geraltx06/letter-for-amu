@@ -49,7 +49,7 @@ body {
   height: 100%;
   object-fit: cover;
   image-rendering: pixelated; /* keep the pixel art crisp when upscaled */
-  filter: brightness(0.7);
+  filter: brightness(0.85);
 }
 .scene::after {
   z-index: 2;

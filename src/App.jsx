@@ -2,7 +2,7 @@ import photo1 from './01.jpg'
 import clip2 from './02-video.mp4'
 import photo3 from './03.jpg'
 import photo4 from './04.jpg'
-import Dusk from './Dusk'
+import Lanterns from './Lanterns'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 const greeting = 'My Joon,'
@@ -51,6 +51,16 @@ const letters = [
     `And your kindness, on the days nothing went right and you'd every excuse not to be kind at all.`,
     `It feels fitting that it happened with Diwali only days away, when everyone is lighting lamps for new beginnings. We got to light one of our own. When we're back, we're celebrating properly, in person, the way we should have today. Until then, consider this letter a toast. To us, to Stats and Scribbles, and to the very first of many.`,
     `I love you, and I'm so terribly proud of us.`,
+  ],
+  [
+    `I sat with this letter for a long time tonight, trying to find the right words, and I've realised there probably aren't any. So I'm just going to talk to you the way I would if I were sitting next to you.`,
+    `You've been on my mind all day, Joon. I wish I could take some of today's weight off your shoulders and carry it myself. I can't do that from here, but I can stay close through all of it, for as long as you need, and you never have to explain a single thing to me.`,
+    `You don't have to be okay right now. You don't have to find the right words, or any words at all. If all you can manage tonight is to read this and fall asleep, that is more than enough. Be as gentle with yourself as you always are with everyone else.`,
+    `I know you've been holding everyone together, being there for your family while carrying all of your own pain at the same time. That is what strength actually looks like. Not never breaking down, but showing up anyway, with your eyes still red. You are so much stronger than you feel right now. You don't have to believe me tonight. I'll believe it for the both of us until you do.`,
+    `Rilke has a line I keep coming back to: "Let everything happen to you: beauty and terror. Just keep going. No feeling is final." I know tonight feels like it will never end. But it isn't final. This is not the last thing you will ever feel, and you won't have to walk through any of it alone.`,
+    `Diwali is almost here, the night everyone lights lamps to say that light wins in the end. It doesn't feel like it's winning right now, and that's okay. The lanterns behind this letter are for you. Every one of them is a small light rising into a very dark sky, and not one of them is afraid of it.`,
+    `I hate that I'm this far away tonight. If I could, I'd be right there beside you, not saying anything clever, just holding you until your breathing slows down. Since I can't, I wrote you something small. It's waiting under my name.`,
+    `I love you, and you are safe with me. Always.`,
   ],
 ]
 // extra bits tucked in after a day's sign-off, keyed by day
@@ -149,6 +159,17 @@ const extras = {
       </section>
     </>
   ),
+  4: (
+    <section className="dispatch">
+      <p>
+        The wind can bend a flame,<br />
+        but it has never made one stop burning.<br />
+        So lean, if you need to. Shake, if you need to.<br />
+        My hands are cupped around you,<br />
+        and the dark will have to get through me first.
+      </p>
+    </section>
+  ),
 }
 const signOff = ['Forever yours,', 'May']
 
@@ -210,7 +231,7 @@ export default function App() {
 
   const [pick, setPick] = useState(null) // { day, rect } of the envelope tapped in the grid
   // one background outside both screens so it keeps playing, not restarting, when a letter opens
-  const bg = <Dusk />
+  const bg = <Lanterns />
   if (pick) return <>{bg}<Letter day={pick.day} paragraphs={letters[pick.day]} from={pick.rect} onBack={() => setPick(null)}>{extras[pick.day]}</Letter></>
 
   return (
