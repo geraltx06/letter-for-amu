@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react'
 
 const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16))
 const pack = ([r, g, b]) => 0xff000000 | (b << 16) | (g << 8) | r // ImageData bytes are RGBA, i.e. ABGR as a little-endian uint32
-const pal = (...hs) => hs.map((h) => pack(rgb(h)))
+export const pal = (...hs) => hs.map((h) => pack(rgb(h)))
 
 const SKY = pal('#05061a', '#080b24', '#0c112f', '#11183b', '#172047', '#1e2752', '#282e5c', '#353463', '#463a68', '#5a406b', '#70476b', '#8a4f68')
 const MOON = pal('#fffbe8', '#f4ecd0', '#e2d6b4', '#c9bc9c', '#a89c80') // lit edge to shadowed edge
@@ -16,15 +16,15 @@ const WATER = rgb('#03041a')
 const CRATERS = [[-0.3, -0.2, 0.22], [0.35, 0.1, 0.16], [0.05, 0.45, 0.12], [-0.42, 0.35, 0.1]] // x, y, radius as shares of the moon's radius
 
 const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map((v) => (v + 0.5) / 16)
-const dither = (x, y, f) => f > BAYER[(y & 3) * 4 + (x & 3)]
+export const dither = (x, y, f) => f > BAYER[(y & 3) * 4 + (x & 3)]
 // colour at f (0..1) along a ramp, ordered-dithered between neighbours the way pixel artists blend
-const ramp = (cols, f, x, y) => {
+export const ramp = (cols, f, x, y) => {
   const p = Math.min(Math.max(f, 0), 1) * (cols.length - 1)
   const i = Math.floor(p)
   return cols[Math.min(i + (dither(x, y, p - i) ? 1 : 0), cols.length - 1)]
 }
-const rnd = (a, b) => a + Math.random() * (b - a)
-const hash = (n) => {
+export const rnd = (a, b) => a + Math.random() * (b - a)
+export const hash = (n) => {
   const s = Math.sin(n * 91.345) * 43758.5453
   return s - Math.floor(s)
 }
@@ -192,6 +192,11 @@ function scene(canvas) {
 }
 
 export default function Lanterns() {
+  return <PixelCanvas scene={scene} />
+}
+
+// runs a scene: scene(canvas) sizes the canvas and returns draw(dt)
+export function PixelCanvas({ scene }) {
   const ref = useRef()
 
   useEffect(() => {

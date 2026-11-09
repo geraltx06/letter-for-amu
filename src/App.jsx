@@ -2,11 +2,14 @@ import photo1 from './01.jpg'
 import clip2 from './02-video.mp4'
 import photo3 from './03.jpg'
 import photo4 from './04.jpg'
+import rangoli from './06-rangoli.jpg'
+import kurta from './06-kurta.jpg'
 import Lanterns from './Lanterns'
+import Diwali from './Diwali'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 const greeting = 'My Joon,'
-const greetings = { 1: 'Day 02,', 2: 'Day 03,', 3: 'Day 04,' } // days that open with their own first line instead
+const greetings = { 1: 'Day 02,', 2: 'Day 03,', 3: 'Day 04,', 5: 'Day 06,' } // days that open with their own first line instead
 // one entry per day; days not written yet stay locked even once their date arrives
 const letters = [
   [
@@ -61,6 +64,13 @@ const letters = [
     `Diwali is almost here, the night everyone lights lamps to say that light wins in the end. It doesn't feel like it's winning right now, and that's okay. The lanterns behind this letter are for you. Every one of them is a small light rising into a very dark sky, and not one of them is afraid of it.`,
     `I hate that I'm this far away tonight. If I could, I'd be right there beside you, not saying anything clever, just holding you until your breathing slows down. Since I can't, I wrote you something small. It's waiting under my name.`,
     `I love you, and you are safe with me. Always.`,
+  ],
+  [
+    `Happy Diwali, Joon. Not much to report from here. Diyas, noise, too many sweets, the usual.`,
+    `I miss you though. More than I thought I would, honestly, and I think we've both been feeling it lately. The weekends especially, they're just weird without you. Two weeks sounded a lot shorter when I was planning it. I've also been thinking about the ramen at Kazan for no real reason. I don't think it's about the ramen.`,
+    `Also, about the things you sent me. I saw them, and I know it looked like I ignored them, but I didn't. I was really occupied at the time and I didn't want to send something half-hearted just to have replied. I actually want to answer them properly, and a quick "haha nice" wasn't going to do that. So I'd rather do them justice when I can sit with them. You'll get real replies, maybe just not all at once.`,
+    `I know it's been a rough week on your end, so no rush replying to this. I'm in no position to rush anyone on replies anyway. Just eat something and sleep when you can.`,
+    `Past halfway now. We still owe the video a proper celebration, and I still have a book to give you. See you soon.`,
   ],
 ]
 // extra bits tucked in after a day's sign-off, keyed by day
@@ -170,6 +180,39 @@ const extras = {
       </p>
     </section>
   ),
+  5: (
+    <>
+      <div className="polaroids">
+        <div className="polaroid">
+          <img className="photo" src={rangoli} alt="A flower rangoli of coloured powder on a marble floor, with a lit diya above it" style={{ objectPosition: '50% 22%' }} />
+        </div>
+        <div className="polaroid">
+          <img className="photo" src={kurta} alt="Mirror selfie in sunglasses and a white embroidered kurta" style={{ objectPosition: '50% 12%' }} />
+        </div>
+      </div>
+      <section className="dispatch">
+        <h2>Some more fun stuff</h2>
+        <ol>
+          <li>
+            <h3>Two-sentence mystery</h3>
+            A clockmaker keeps every clock in his shop set a few seconds apart, and he refuses to sell any of them. Every evening at six, the whole street stops to listen. What are they hearing?
+          </li>
+          <li>
+            <h3>True or myth?</h3>
+            Sharks have been around longer than trees.
+            <details>
+              <summary>tap for the answer</summary>
+              True! Early sharks go back around 400 million years, and the first trees only showed up a little after that.
+            </details>
+          </li>
+          <li>
+            <h3>Micro-challenge</h3>
+            Reply with the last thing you ate. Nothing else.
+          </li>
+        </ol>
+      </section>
+    </>
+  ),
 }
 const signOff = ['Forever yours,', 'May']
 
@@ -231,7 +274,7 @@ export default function App() {
 
   const [pick, setPick] = useState(null) // { day, rect } of the envelope tapped in the grid
   // one background outside both screens so it keeps playing, not restarting, when a letter opens
-  const bg = <Lanterns />
+  const bg = pick?.day === 4 ? <Lanterns /> : <Diwali /> // day 5's letter talks about the lanterns behind it
   if (pick) return <>{bg}<Letter day={pick.day} paragraphs={letters[pick.day]} from={pick.rect} onBack={() => setPick(null)}>{extras[pick.day]}</Letter></>
 
   return (

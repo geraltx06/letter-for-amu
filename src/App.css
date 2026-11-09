@@ -8,7 +8,7 @@
   --cream: #f1e6cf;
   --paper: url('./paper.jpg'); /* the letter sheet; days can swap it, see .day-1 */
 }
-.day-1 { --paper: url('./paper-plain.jpg'); }
+.day-1, .day-5 { --paper: url('./paper-plain.jpg'); }
 
 * { box-sizing: border-box; margin: 0; }
 
