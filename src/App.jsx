@@ -226,13 +226,7 @@ const extras = {
     </>
   ),
   6: (
-    // empty frames show as still-developing prints; swap each div for an <img className="photo" src={...} /> once the photos are in
-    <>
-      <div className="polaroids">
-        <div className="polaroid"><div className="photo" /></div>
-        <div className="polaroid"><div className="photo" /></div>
-      </div>
-      <section className="dispatch">
+    <section className="dispatch">
         <h2>Some fun stuff, for when you need a distraction</h2>
         <ol>
           <li>
@@ -253,7 +247,6 @@ const extras = {
           </li>
         </ol>
       </section>
-    </>
   ),
 }
 const signOff = ['Forever yours,', 'May']
