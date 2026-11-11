@@ -4,6 +4,7 @@ import photo3 from './03.jpg'
 import photo4 from './04.jpg'
 import rangoli from './06-rangoli.jpg'
 import kurta from './06-kurta.jpg'
+import lake from './07-lake.mp4'
 import Lanterns from './Lanterns'
 import Diwali from './Diwali'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
@@ -71,6 +72,17 @@ const letters = [
     `Also, about the things you sent me. I saw them, and I know it looked like I ignored them, but I didn't. I was really occupied at the time and I didn't want to send something half-hearted just to have replied. I actually want to answer them properly, and a quick "haha nice" wasn't going to do that. So I'd rather do them justice when I can sit with them. You'll get real replies, maybe just not all at once.`,
     `I know it's been a rough week on your end, so no rush replying to this. I'm in no position to rush anyone on replies anyway. Just eat something and sleep when you can.`,
     `Past halfway now. We still owe the video a proper celebration, and I still have a book to give you. See you soon.`,
+  ],
+  [
+    `So I hear you were planning on breaking up with me. Not because you're tired of me, but because you didn't want to put me through all of this. I've given it some serious thought, and I'm afraid I'll have to decline. I checked the rules, and "I'm sad and I don't want you to be sad too" isn't grounds for a breakup. If anything, it's the exact reason to stay.`,
+    `I know you said it half as a joke. But I heard the other half too, and Joon, that might be the most you thing you've ever said. Even at your lowest, the first thing you thought about was protecting me. So let me say this properly: you're not putting me through anything. Nobody is dragging me through your hard days. I'm walking through them with you, because that's where I want to be. I'd much rather be inside the bad weeks with you than safe somewhere outside them without you.`,
+    `You don't have to shield me from your life. I'm not a guest who only gets to see the good rooms. I'm supposed to be part of all of it, the heavy parts included.`,
+    `I know nothing at home has really moved yet. It's been days of the same weight, and that kind of tired doesn't go away with one good night's sleep. You don't have to be fine, and you definitely don't have to pretend to be fine for my sake. If you've got nothing to say, we can just be on a call and say nothing. I'm good at that. Ask anyone.`,
+    `You don't owe me long replies, or good moods, or a version of you that has it all together. I'm not keeping score. A one-word text is fine. A sticker is fine. Going quiet for a while is fine too, as long as you know I'm still right here when you come back up.`,
+    `Mary Oliver wrote, "You do not have to be good... You only have to let the soft animal of your body love what it loves." I think about that one a lot. You don't have to be good right now, or strong, or productive. Just eat something, sleep when you can, and let yourself be looked after a little, even from this far away.`,
+    `And if you still want to break up with me once I'm back, fine, but you'll have to do it in person. After the book. After the video's proper celebration. I like my odds.`,
+    `Only a few more days now.`,
+    `I love you on your good days, and on every single one of the other ones too.`,
   ],
 ]
 // extra bits tucked in after a day's sign-off, keyed by day
@@ -213,6 +225,36 @@ const extras = {
       </section>
     </>
   ),
+  6: (
+    // empty frames show as still-developing prints; swap each div for an <img className="photo" src={...} /> once the photos are in
+    <>
+      <div className="polaroids">
+        <div className="polaroid"><div className="photo" /></div>
+        <div className="polaroid"><div className="photo" /></div>
+      </div>
+      <section className="dispatch">
+        <h2>Some fun stuff, for when you need a distraction</h2>
+        <ol>
+          <li>
+            <h3>Two-sentence mystery</h3>
+            Every night, a woman switches on one lamp in the window of a house that has stood empty for years. Nobody lives there and nobody is coming back, yet the whole street thanks her for it. Why?
+          </li>
+          <li>
+            <h3>True or myth?</h3>
+            Sea otters hold hands while they sleep so they don't drift away from each other.
+            <details>
+              <summary>tap for the answer</summary>
+              True! Sea otters sleep floating on their backs, and they often hold paws or wrap themselves in kelp so the current doesn't carry them apart.
+            </details>
+          </li>
+          <li>
+            <h3>Micro-challenge</h3>
+            Reply with one emoji for how today felt. Nothing else.
+          </li>
+        </ol>
+      </section>
+    </>
+  ),
 }
 const signOff = ['Forever yours,', 'May']
 
@@ -274,7 +316,11 @@ export default function App() {
 
   const [pick, setPick] = useState(null) // { day, rect } of the envelope tapped in the grid
   // one background outside both screens so it keeps playing, not restarting, when a letter opens
-  const bg = pick?.day === 4 ? <Lanterns /> : <Diwali /> // day 5's letter talks about the lanterns behind it
+  const bg =
+    pick?.day === 4 ? <Lanterns /> // day 5's letter talks about the lanterns behind it
+    : !pick || pick.day === 6 ? <video className="bg" src={lake} autoPlay muted loop playsInline aria-hidden="true" />
+    : <Diwali />
+
   if (pick) return <>{bg}<Letter day={pick.day} paragraphs={letters[pick.day]} from={pick.rect} onBack={() => setPick(null)}>{extras[pick.day]}</Letter></>
 
   return (
