@@ -5,6 +5,8 @@ import photo4 from './04.jpg'
 import rangoli from './06-rangoli.jpg'
 import kurta from './06-kurta.jpg'
 import lake from './07-lake.mp4'
+import cigarettes from './08-cigarettes.mp4'
+import hospital from './08-hospital.jpg'
 import Lanterns from './Lanterns'
 import Diwali from './Diwali'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
@@ -83,6 +85,19 @@ const letters = [
     `And if you still want to break up with me once I'm back, fine, but you'll have to do it in person. After the book. After the video's proper celebration. I like my odds.`,
     `Only a few more days now.`,
     `I love you on your good days, and on every single one of the other ones too.`,
+  ],
+  [
+    `Sorry it's been a few days since the last one. In my defence, I've been busy developing acute bronchitis. It's going great. I now cough like a man who's smoked for forty years, my chest feels like someone parked a scooter on it, and climbing one flight of stairs counts as cardio. Don't worry, I'm taking the medicines, drinking the warm water, and resting. Mostly. I'll be fully functional by the time you see me, I promise.`,
+    `Meanwhile you've been working. Version after version of your voice over. And every time I tell you it's good, you tell me my appreciation doesn't feel real, because I never give you any proper critique.`,
+    `So here's my defence, and I'd like it on the record. I'm not being polite, Joon. You're doing everything right. What exactly am I supposed to critique? I listen, I wait for the bit I'd change, and it never comes. You keep redoing lines that were already good, and somehow they come back better. If my notes are boring, that's on you for not leaving me anything to fix.`,
+    `And I think I know why it doesn't feel real to you. Somewhere in your head there's a voice that says you have to earn being good enough, take after take, until nobody could possibly find a flaw. I'd like that voice to know it's wrong. You don't have to be flawless for me to be proud of you. I was proud of you before you recorded a single line, and I'll still be proud of you on the takes you think are terrible. My praise isn't a grade, Joon. It's just the truth, said by someone who gets to watch you up close.`,
+    `And now we've started on the PageRank video, video number two. Number two! I've been making drafts of the animation, and you've already recorded a few lines and gone and tried a whole new style of voice over, like the first one wasn't good enough for you. It was. This one's going to be better anyway, because that's just how you work.`,
+    `Fittingly, PageRank is the idea that a page matters because of everything that points to it. If you ran it on my life, every link would lead back to you. Very important page. Top result. No notes there either.`,
+    `There's a picture under my name, and before you panic, I'm fine. It's from the hospital. The cough finally got bad enough that I got dragged in, and somewhere between being handed a mask and being hooked up to a drip, I decided that if I was going to be sick, I was at least going to document it. So that's me, in all my hospital glory. Bed hair, mask, drip, the full set. Not my best angle, but I thought you'd want to see the proof that I'm actually getting looked after and not just telling you I am.`,
+    `And please don't spend these days worrying about me, or feeling bad that you're not here. You've had more than enough on your plate without adding me to it. I'm being looked after, I'm getting better, and I'll be okay. You don't owe me anything for being sick. Just knowing you're out there, and that I get to see you in a few days, is doing more for me than any medicine.`,
+    `These two weeks have been long, and messy, and not at all how we planned them. You had the heaviest days at home, I ended up in a hospital bed, and somehow we still started a whole new video together. If anything, that's the part I'll remember. Nothing about this distance has made us smaller. We're coming out of it exactly as we went in, maybe a little more sure of each other.`,
+    `Only a few more days now. I'll be the one coughing at the door. Try not to break up with me over that either.`,
+    `I love you, voice cracks and all. Mine included.`,
   ],
 ]
 // extra bits tucked in after a day's sign-off, keyed by day
@@ -248,6 +263,36 @@ const extras = {
         </ol>
       </section>
   ),
+  7: (
+    <>
+      <div className="polaroids">
+        <div className="polaroid">
+          <img className="photo" src={hospital} alt="Selfie in a hospital bed wearing a blue surgical mask, with an IV drip hanging beside the bed" style={{ objectPosition: '50% 40%' }} />
+        </div>
+      </div>
+      <section className="dispatch">
+        <h2>Some fun stuff, prescribed by your sick boyfriend</h2>
+        <ol>
+          <li>
+            <h3>Two-sentence mystery</h3>
+            A woman shoots her husband, holds him underwater for five minutes, then hangs him up. An hour later, the two of them go out to dinner together. How?
+          </li>
+          <li>
+            <h3>True or myth?</h3>
+            Google's PageRank is named after web pages, because it ranks pages.
+            <details>
+              <summary>tap for the answer</summary>
+              Myth, sort of! It's named after Larry Page, one of Google's co-founders. The fact that it also ranks pages is a very convenient pun.
+            </details>
+          </li>
+          <li>
+            <h3>Micro-challenge</h3>
+            Send me a voice note of just one line from the new style. No retakes allowed.
+          </li>
+        </ol>
+      </section>
+    </>
+  ),
 }
 const signOff = ['Forever yours,', 'May']
 
@@ -311,7 +356,8 @@ export default function App() {
   // one background outside both screens so it keeps playing, not restarting, when a letter opens
   const bg =
     pick?.day === 4 ? <Lanterns /> // day 5's letter talks about the lanterns behind it
-    : !pick || pick.day === 6 ? <video className="bg" src={lake} autoPlay muted loop playsInline aria-hidden="true" />
+    : !pick || pick.day === 7 ? <video className="bg" src={cigarettes} autoPlay muted loop playsInline aria-hidden="true" />
+    : pick.day === 6 ? <video className="bg" src={lake} autoPlay muted loop playsInline aria-hidden="true" />
     : <Diwali />
 
   if (pick) return <>{bg}<Letter day={pick.day} paragraphs={letters[pick.day]} from={pick.rect} onBack={() => setPick(null)}>{extras[pick.day]}</Letter></>
